@@ -27,10 +27,19 @@ body {
     text-align: center;
 }
 
+.dir-list li:hover {
+    background: #f7f7f7;
+}
+
 .dir-list a {
     text-decoration: none;
     color: #333;
     display: block;
+    transition: color 0.2s;
+}
+
+.dir-list a:hover {
+    color: #0077cc;
 }
 
 h1 {
