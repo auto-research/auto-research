@@ -1,12 +1,15 @@
 # Auto Research Static Site
 
-This repository hosts a simple static HTML website. The site files are located in the repository root and the `assets` directory.
+This repository hosts a simple static HTML website for GitHub Pages.
+All site files are located in the `docs` directory so that GitHub
+Pages can serve them automatically.
 
 ## Structure
 
-- `index.html` – main page
-- `assets/css/style.css` – styles
-- `assets/js/script.js` – JavaScript
-- `assets/img/` – place images here
+- `docs/index.html` – main page
+- `docs/assets/css/style.css` – styles
+- `docs/assets/js/script.js` – JavaScript
+- `docs/assets/img/` – place images here
 
-You can open `index.html` directly in a browser or configure a static site host (e.g. GitHub Pages) to serve it.
+Open `docs/index.html` in a browser or enable GitHub Pages with the
+"Deploy from `docs/`" option to serve the site.
