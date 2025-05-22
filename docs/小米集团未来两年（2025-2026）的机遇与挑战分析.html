@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小米集团未来两年机遇与挑战分析</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Visualization & Content Choices: 
+        - Report Info: Key Financials (2024 Revenue, Profit) -> Goal: Inform -> Viz: Key stat cards, Bar Chart -> Interaction: Tooltips -> Justification: Quick financial health overview -> Library: Chart.js.
+        - Report Info: Smartphone Market Share (China & Global Q1 2025) -> Goal: Compare -> Viz: Grouped Bar Chart -> Interaction: Tooltips -> Justification: Clear market position comparison -> Library: Chart.js.
+        - Report Info: AIoT Growth (Connected Devices, MAU YoY) -> Goal: Show expansion -> Viz: Key stat cards -> Interaction: None -> Justification: Highlights ecosystem scale -> Library: HTML/Tailwind.
+        - Report Info: EV Market Share (Global BEV Q1 2025) -> Goal: Show entry -> Viz: Bar Chart -> Interaction: Tooltips -> Justification: Shows position vs competitors -> Library: Chart.js.
+        - Report Info: "人车家全生态" Strategy -> Goal: Explain core strategy -> Viz: Text + Unicode Icons (📱🚗🏠) -> Interaction: None -> Justification: Central to understanding Xiaomi -> Library: HTML/Tailwind.
+        - Report Info: Opportunities/Challenges per section -> Goal: Inform strategic factors -> Viz: Styled lists/cards -> Interaction: Static display -> Justification: Easy to scan -> Library: HTML/Tailwind.
+        - Report Info: R&D Investment -> Goal: Highlight innovation commitment -> Viz: Key stat card -> Interaction: None -> Justification: Emphasizes priority -> Library: HTML/Tailwind.
+        All charts use Chart.js for canvas rendering, with responsive design and tooltips. No SVG or Mermaid JS is used. Textual content is summarized and presented in digestible blocks with clear headings.
+    -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .tab-active { border-bottom-width: 2px; border-color: #0369a1; color: #0369a1; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+        .stat-card { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; text-align: center; }
+        .stat-card h3 { color: #0369a1; font-size: 1.125rem; font-weight: 600; }
+        .stat-card p { color: #1e293b; font-size: 1.5rem; font-weight: 700; margin-top: 0.5rem; }
+        .stat-card span { font-size: 0.875rem; color: #475569; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-sky-700">小米集团未来两年（2025-2026）的机遇与挑战分析</h1>
+        </header>
+
+        <nav class="mb-8 border-b border-slate-300">
+            <ul class="flex flex-wrap -mb-px text-sm font-medium text-center text-slate-600">
+                <li class="mr-2">
+                    <button class="tab-button inline-block p-4 rounded-t-lg hover:text-sky-600 hover:border-sky-600" data-tab="overview">概览</button>
+                </li>
+                <li class="mr-2">
+                    <button class="tab-button inline-block p-4 rounded-t-lg hover:text-sky-600 hover:border-sky-600" data-tab="smartphones">智能手机</button>
+                </li>
+                <li class="mr-2">
+                    <button class="tab-button inline-block p-4 rounded-t-lg hover:text-sky-600 hover:border-sky-600" data-tab="aiot">AIoT与生活消费产品</button>
+                </li>
+                <li class="mr-2">
+                    <button class="tab-button inline-block p-4 rounded-t-lg hover:text-sky-600 hover:border-sky-600" data-tab="ev">智能电动汽车</button>
+                </li>
+                <li class="mr-2">
+                    <button class="tab-button inline-block p-4 rounded-t-lg hover:text-sky-600 hover:border-sky-600" data-tab="drivers">核心驱动力</button>
+                </li>
+                <li>
+                    <button class="tab-button inline-block p-4 rounded-t-lg hover:text-sky-600 hover:border-sky-600" data-tab="conclusion">总结与展望</button>
+                </li>
+            </ul>
+        </nav>
+
+        <main>
+            <section id="overview" class="content-section space-y-6">
+                <p class="text-lg text-slate-700 leading-relaxed">本部分概述了小米集团在未来两年的战略方向、近期财务表现以及其核心“人车家全生态”战略。小米致力于通过技术创新和生态整合，在智能手机、AIoT设备和智能电动汽车领域实现协同发展，以应对市场变化并抓住增长机遇。</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="stat-card">
+                        <h3>2024年总收入</h3>
+                        <p>3659 亿人民币</p>
+                        <span class="text-green-600">同比增长 35.0%</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3>2024年调整后净利润</h3>
+                        <p>272 亿人民币</p>
+                        <span class="text-green-600">同比增长 41.3%</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3>2024年研发支出</h3>
+                        <p>240.5 亿人民币</p>
+                    </div>
+                </div>
+
+                <h2 class="text-2xl font-semibold text-sky-700 pt-4">执行摘要</h2>
+                <p>小米集团作为全球领先的科技企业，正通过“人车家全生态”战略，旨在实现智能手机、AIoT设备和智能电动汽车之间的无缝互联。2024年财务表现强劲，总收入达3659亿元，调整后净利润272亿元。增长主要得益于智能手机与AIoT业务的扩张及智能电动汽车的初步发展。</p>
+                <p><strong class="text-sky-600">主要机遇 (2025-2026):</strong> 生态系统协同、AI与核心技术研发、智能手机高端化、全球市场拓展。“人车家全生态”战略有望提升用户体验，促进交叉销售。</p>
+                <p><strong class="text-red-600">主要挑战 (2025-2026):</strong> 驾驭竞争激烈的新能源汽车市场（尤其在SU7销量下滑及信任危机后），维持补贴后智能手机增长，应对地缘政治与宏观经济不确定性，确保产品线质量一致性。</p>
+
+                <h2 class="text-2xl font-semibold text-sky-700 pt-4">小米“人车家全生态”战略 <span class="text-2xl">📱 🚗 🏠</span></h2>
+                <p>小米的核心企业战略是其于2023年10月提出的“人车家全生态”，旨在将个人设备（智能手机）、智能家居产品（AIoT）和汽车（电动汽车）无缝融合为一个统一的智能生态系统。此战略通过小米自主研发的HyperOS赋能，包含HyperCore、HyperConnect和HyperAI三大核心技术，实现跨设备智能连接和高级AI功能，提升用户体验，增强品牌忠诚度，并创造新的收入来源。</p>
+                
+                <h3 class="text-xl font-semibold text-sky-600 pt-2">业务板块概览 (自2024年Q2)</h3>
+                <ul class="list-disc list-inside space-y-1 text-slate-700">
+                    <li><strong>智能手机 × AIoT板块:</strong> 核心收入来源，2024年收入3332亿元 (占总收入91%)。智能手机业务2024年收入1918亿元 (占总收入52.4%)。</li>
+                    <li><strong>智能电动汽车及其他创新业务板块:</strong> 2024年收入328亿元。</li>
+                </ul>
+                 <div class="chart-container">
+                    <canvas id="revenueBreakdownChart"></canvas>
+                </div>
+                <p class="text-sm text-slate-500 text-center">图表：2024年收入板块构成（示意）</p>
+            </section>
+
+            <section id="smartphones" class="content-section space-y-6">
+                <p class="text-lg text-slate-700 leading-relaxed">智能手机业务是小米集团的基石。本部分将探讨小米在全球及中国市场的表现，其高端化战略的进展与影响，人工智能在手机创新中的作用，以及该业务面临的市场饱和、激烈竞争和对补贴依赖等挑战。小米正努力通过技术创新和品牌升级，巩固其市场地位并提升盈利能力。</p>
+                
+                <h2 class="text-2xl font-semibold text-sky-700">全球与中国市场表现 (2025年Q1)</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div class="stat-card">
+                        <h3>中国大陆市场份额</h3>
+                        <p>19% <span class="text-sm">(1330万台)</span></p>
+                        <span class="text-green-600">同比增长 40%, 重回榜首</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3>全球市场份额</h3>
+                        <p>14% <span class="text-sm">(4180万台)</span></p>
+                        <span class="text-green-600">同比增长 3%, 稳居第三</span>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="smartphoneMarketShareChart"></canvas>
+                </div>
+                <p class="text-sm text-slate-500 text-center">图表：2025年Q1智能手机市场份额 (中国大陆)</p>
+
+                <h3 class="text-xl font-semibold text-sky-600 pt-2">高端化战略及其影响</h3>
+                <p>小米的“高端化战略”成果显著，2024年高端智能手机在中国大陆出货量占比达23.3%。在4000-5000元价格区间，小米2024年以24.3%市场份额位居榜首。小米15 Ultra (5999元) 在2025年Q1占据中国高端市场6%份额。此战略旨在提升利润率和品牌声望，摆脱“性价比”形象。</p>
+
+                <h3 class="text-xl font-semibold text-sky-600 pt-2">人工智能的作用</h3>
+                <p>AI深度集成于HyperOS 2，增强智能相机、虚拟助手、性能优化等。AI智能手机普及加速，2024年占中国出货量22%，预计2025年超40%。小米采用DeepSeek AI平台抓住趋势。</p>
+
+                <h3 class="text-xl font-semibold text-sky-600 pt-2">挑战</h3>
+                <ul class="list-disc list-inside space-y-1 text-slate-700">
+                    <li><strong>市场饱和:</strong> 全球市场温和增长 (Q1 2025: +0.2%)，中国市场预计2025年增长3-5%。</li>
+                    <li><strong>激烈竞争:</strong> 苹果、三星以及Vivo、Oppo、华为等。华为HarmonyOS构成挑战。</li>
+                    <li><strong>补贴依赖:</strong> 中国市场Q1增长很大程度得益于国家补贴 (预计2025年中到期)，其终止可能影响增长势头。小米需推动有机需求。</li>
+                </ul>
+            </section>
+
+            <section id="aiot" class="content-section space-y-6">
+                 <p class="text-lg text-slate-700 leading-relaxed">小米的AIoT（人工智能物联网）与生活消费产品业务是其生态系统战略的关键组成部分。本部分将分析其连接设备和用户规模的增长，生态系统整合带来的竞争优势，智能家居市场的最新趋势（包括Matter协议），以及相关的机遇与挑战。AIoT业务不仅贡献收入，更是服务货币化和增强用户粘性的重要基础。</p>
+
+                <h2 class="text-2xl font-semibold text-sky-700">AIoT平台增长 (截至2024年底)</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div class="stat-card">
+                        <h3>连接IoT设备数</h3>
+                        <p>9.046 亿台</p>
+                        <span class="text-green-600">同比增长 22.3%</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3>全球月活跃用户 (MAU)</h3>
+                        <p>7.023 亿</p>
+                        <span class="text-green-600">同比增长 9.5%</span>
+                    </div>
+                </div>
+                <div class="chart-container">
+                     <canvas id="aiotGrowthChart"></canvas>
+                </div>
+                <p class="text-sm text-slate-500 text-center">图表：AIoT关键指标同比增长 (2024)</p>
+                <p>2024年IoT与生活消费产品收入1041亿元 (同比增长30.0%)，毛利率20.3%。拥有5个或更多连接设备的用户数同比增长24.9%至1710万 (2024年Q3)。</p>
+
+                <h3 class="text-xl font-semibold text-sky-600 pt-2">生态系统整合与竞争优势</h3>
+                <p>庞大的互联设备生态系统是核心优势，旨在建立品牌忠诚度和交叉销售机会。智能手机作为控制中心。“人车家全生态”战略强化整合体验，培养用户粘性。</p>
+
+                <h3 class="text-xl font-semibold text-sky-600 pt-2">智能家居市场趋势</h3>
+                <p>全球智能家居市场2024年估值1832亿美元，预计2034年达4142亿美元。AI、便利性、能效、安全是驱动因素。Matter协议旨在统一设备，但采用缓慢且复杂，小米米家智能中枢2兼容性有限。</p>
+                
+                <h3 class="text-xl font-semibold text-sky-600 pt-2">机遇与挑战</h3>
+                <ul class="list-disc list-inside space-y-1 text-slate-700">
+                    <li><strong>机遇:</strong> 用户群扩大，交叉销售 (米家用户升级手机可能性高2.3倍)，服务货币化。</li>
+                    <li><strong>挑战:</strong> Matter整合复杂性可能稀释生态锁定效应，专业化竞争，数据安全与隐私。</li>
+                </ul>
+            </section>
+
+            <section id="ev" class="content-section space-y-6">
+                <p class="text-lg text-slate-700 leading-relaxed">智能电动汽车业务是小米集团最新的战略重点和“第三增长曲线”。本部分将审视小米进入电动汽车市场的初步表现，其巨额投资与战略承诺，以及在品牌认知、激烈竞争、盈利能力和监管审查方面面临的严峻挑战。同时，也将探讨生态系统整合、AI定义汽车趋势和海外扩张带来的机遇。</p>
+
+                <h2 class="text-2xl font-semibold text-sky-700">市场进入与初期表现 (小米SU7)</h2>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div class="stat-card">
+                        <h3>SU7 初期订单</h3>
+                        <p>>5万辆 <span class="text-sm">(27分钟内)</span></p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>全球BEV市场份额 (Q1 2025)</h3>
+                        <p>2.8% <span class="text-sm">(单一车型SU7, 位列第8)</span></p>
+                    </div>
+                </div>
+                <p>截至2025年2月，SU7累计交付超18万辆。2024年电动汽车业务收入328亿元，但调整后净亏损62亿元。</p>
+                <div class="chart-container">
+                    <canvas id="bevMarketShareChart"></canvas>
+                </div>
+                <p class="text-sm text-slate-500 text-center">图表：2025年Q1全球纯电动汽车(BEV)市场份额</p>
+
+                <h3 class="text-xl font-semibold text-sky-600 pt-2">投资与战略承诺</h3>
+                <p>承诺未来十年投入100亿美元。首款车研发投入100亿元 (47亿用于智能驾驶)。采取端到端整车生产，北京智能工厂已运营并扩建。</p>
+
+                <h3 class="text-xl font-semibold text-sky-600 pt-2">挑战</h3>
+                <ul class="list-disc list-inside space-y-1 text-slate-700">
+                    <li><strong>品牌认知与信任危机:</strong> SU7销量下滑，因安全担忧和误导性广告引发信任问题。CEO承认面临“最艰难时期”。</li>
+                    <li><strong>激烈竞争:</strong> 特斯拉、比亚迪及众多本土品牌 (蔚来、小鹏等)。</li>
+                    <li><strong>盈利能力:</strong> 2024年调整后净亏损62亿元。S&P预测2025-2026年将持续亏损，需更高资本支出。</li>
+                    <li><strong>监管审查:</strong> 对智能驾驶广告和电池安全标准审查趋严。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold text-sky-600 pt-2">机遇</h3>
+                <ul class="list-disc list-inside space-y-1 text-slate-700">
+                    <li><strong>生态系统整合:</strong> 通过HyperOS与手机、AIoT无缝连接， leveraging 用户基础。</li>
+                    <li><strong>AI定义汽车:</strong> 持续AI投入，HyperAI，智能驾驶研发。</li>
+                    <li><strong>海外扩张:</strong> 计划2027年启动海外部署。</li>
+                </ul>
+            </section>
+
+            <section id="drivers" class="content-section space-y-6">
+                <p class="text-lg text-slate-700 leading-relaxed">小米集团的未来发展受到多种跨领域战略要素和外部环境因素的深刻影响。本部分将重点分析其在研发创新、供应链管理与质量控制、全球扩张与市场准入，以及宏观经济与监管环境方面的关键举措、面临的挑战和潜在机遇。这些因素共同塑造了小米的竞争力及其实现长期战略目标的能力。</p>
+
+                <h2 class="text-2xl font-semibold text-sky-700">研发 (R&D) 与创新</h2>
+                <p>2024年研发支出240.5亿元。计划2021-2025年投入1050亿元。HyperOS 2是技术基础，集成HyperCore, HyperConnect, HyperAI。全球5G SEP专利排名第八。计划2025年量产自研移动处理器Xring O1。挑战包括高成本、执行风险、人才竞争。</p>
+
+                <h2 class="text-2xl font-semibold text-sky-700 pt-4">供应链管理与质量控制</h2>
+                <p>采用直销模式，与富士康、比亚迪等合作。注重原材料采购多元化，利用AI提高效率。电动汽车工厂高度自动化，采用先进检测技术。挑战包括OEM依赖、地缘政治风险 (中美贸易紧张)。</p>
+
+                <h2 class="text-2xl font-semibold text-sky-700 pt-4">全球扩张与市场准入</h2>
+                <p>智能手机全球前三。2024年在非洲、东南亚、中东市场份额增长。计划五年内全球开设10000家小米之家。电动汽车2027年计划出海。挑战包括地缘政治 (中美贸易战，友岸外包成本增加)、市场准入资质、专利风险、本土化竞争。</p>
+
+                <h2 class="text-2xl font-semibold text-sky-700 pt-4">宏观经济与监管环境</h2>
+                <p>中国经济2024/Q1 2025 GDP增长约5%，但消费趋理性。AI预计积极影响经济。“中国制造2025”战略契合小米半导体投入。政府补贴推动Q1手机销售。挑战包括通缩压力、房地产下滑影响消费信心、科技和电动汽车行业监管趋严。</p>
+            </section>
+
+            <section id="conclusion" class="content-section space-y-6">
+                <p class="text-lg text-slate-700 leading-relaxed">综合来看，小米集团在未来两年面临着前所未有的机遇，同时也伴随着严峻的挑战。本部分将总结分析结果，明确指出小米在2025-2026年取得成功的关键因素，并展望其长期的发展轨迹和战略方向。小米的转型之路，特别是在智能电动汽车领域的突破，将是决定其未来市场地位的核心。</p>
+                
+                <p>小米“人车家全生态”战略构建了强大护城河。智能手机高端化和AI整合提升竞争力。AIoT用户增长为服务变现奠基。然而，电动汽车业务亏损且面临信任危机。智能手机增长放缓、补贴依赖、地缘政治和宏观经济不确定性是主要挑战。</p>
+
+                <h2 class="text-2xl font-semibold text-sky-700 pt-4">2025-2026年关键成功因素</h2>
+                <ul class="list-disc list-inside space-y-2 text-slate-700">
+                    <li><strong class="text-sky-600">加速电动汽车业务盈利化：</strong>提升效率，控制成本，推出有竞争力车型。</li>
+                    <li><strong class="text-sky-600">重建并巩固品牌信任：</strong>尤其在电动汽车领域，通过透明沟通、严格品控和优质服务。</li>
+                    <li><strong class="text-sky-600">深化智能手机高端化战略：</strong>持续研发投入，提升ASP和毛利率。</li>
+                    <li><strong class="text-sky-600">强化AIoT生态系统整合：</strong>拥抱Matter等标准，同时保持独特价值和用户体验。</li>
+                    <li><strong class="text-sky-600">优化全球供应链韧性：</strong>多元化供应商和生产基地，降低地缘政治风险。</li>
+                    <li><strong class="text-sky-600">灵活应对宏观经济和政策变化：</strong>及时调整市场策略。</li>
+                </ul>
+
+                <h2 class="text-2xl font-semibold text-sky-700 pt-4">长期发展轨迹与战略方向</h2>
+                <p>小米的长期成功取决于能否将消费电子领域的创新能力复制到电动汽车行业，并提升高利润软件和互联网服务比重。从硬件公司转型为集成技术生态系统企业，能否驾驭电动汽车高风险新领域，并有效应对外部不确定性，将决定其未来全球科技格局中的地位。</p>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab-button');
+        const contents = document.querySelectorAll('.content-section');
+
+        function setActiveTab(tabButton) {
+            tabs.forEach(btn => {
+                btn.classList.remove('tab-active', 'text-sky-700', 'border-sky-700');
+                btn.classList.add('text-slate-600', 'hover:text-sky-600', 'hover:border-sky-600');
+            });
+            tabButton.classList.add('tab-active', 'text-sky-700', 'border-sky-700');
+            tabButton.classList.remove('text-slate-600', 'hover:text-sky-600', 'hover:border-sky-600');
+        }
+
+        function showContent(tabId) {
+            contents.forEach(content => {
+                if (content.id === tabId) {
+                    content.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                }
+            });
+        }
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.getAttribute('data-tab');
+                setActiveTab(tab);
+                showContent(tabId);
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (tabs.length > 0) {
+                tabs[0].click();
+            }
+
+            const commonChartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: { size: 10 },
+                            color: '#475569',
+                            padding: 10,
+                             boxWidth: 10,
+                        }
+                    },
+                    tooltip: {
+                        enabled: true,
+                        backgroundColor: 'rgba(0,0,0,0.7)',
+                        titleFont: { size: 12 },
+                        bodyFont: { size: 11 },
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y + (context.dataset.unit || '%');
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#475569',
+                            font: { size: 10 },
+                            maxRotation: 45,
+                            minRotation: 0,
+                            callback: function(value, index, values) {
+                                const label = this.getLabelForValue(value);
+                                if (label.length > 16) {
+                                    return label.substring(0, 15) + '...';
+                                }
+                                return label;
+                            }
+                        },
+                        grid: { display: false }
+                    },
+                    y: {
+                        ticks: {
+                            color: '#475569',
+                            font: { size: 10 },
+                            callback: function(value) { return value + (this.chart.options.scales.y.unit || '%'); }
+                        },
+                        grid: { color: '#e2e8f0' },
+                        beginAtZero: true
+                    }
+                }
+            };
+            
+            const revenueBreakdownCtx = document.getElementById('revenueBreakdownChart')?.getContext('2d');
+            if (revenueBreakdownCtx) {
+                new Chart(revenueBreakdownCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['智能手机 × AIoT', '智能电动汽车及其他'],
+                        datasets: [{
+                            label: '收入占比',
+                            data: [91, 9],
+                            backgroundColor: ['#38bdf8', '#fbbf24'],
+                            borderColor: ['#0ea5e9', '#f59e0b'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'top', labels: { color: '#475569', font: {size: 10}, boxWidth: 10 } },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) { label += ': '; }
+                                        if (context.parsed !== null) { label += context.parsed + '%'; }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+
+            const smartphoneMarketShareCtx = document.getElementById('smartphoneMarketShareChart')?.getContext('2d');
+            if (smartphoneMarketShareCtx) {
+                new Chart(smartphoneMarketShareCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['小米', '华为', 'OPPO', 'vivo', '苹果'],
+                        datasets: [{
+                            label: '中国大陆市场份额 (%) Q1 2025',
+                            data: [19, 18, 15, 15, 13],
+                            backgroundColor: '#38bdf8',
+                            borderColor: '#0ea5e9',
+                            borderWidth: 1,
+                            unit: '%'
+                        }]
+                    },
+                    options: {...commonChartOptions, scales: {...commonChartOptions.scales, y: {...commonChartOptions.scales.y, unit: '%'}}}
+                });
+            }
+            
+            const aiotGrowthCtx = document.getElementById('aiotGrowthChart')?.getContext('2d');
+            if (aiotGrowthCtx) {
+                new Chart(aiotGrowthCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['连接IoT设备数', '全球MAU'],
+                        datasets: [{
+                            label: '同比增长 (%) 2024',
+                            data: [22.3, 9.5],
+                            backgroundColor: ['#2dd4bf', '#a78bfa'],
+                            borderColor: ['#14b8a6', '#8b5cf6'],
+                            borderWidth: 1,
+                            unit: '%'
+                        }]
+                    },
+                     options: {...commonChartOptions, scales: {...commonChartOptions.scales, y: {...commonChartOptions.scales.y, unit: '%'}}}
+                });
+            }
+
+            const bevMarketShareCtx = document.getElementById('bevMarketShareChart')?.getContext('2d');
+            if (bevMarketShareCtx) {
+                new Chart(bevMarketShareCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['比亚迪', '特斯拉', '吉利', '上汽通用五菱', '大众', '小鹏', '宝马', '小米', '零跑', '现代'],
+                        datasets: [{
+                            label: '全球BEV市场份额 (%) Q1 2025',
+                            data: [15.4, 12.6, 6.9, 6.6, 4.0, 3.5, 3.0, 2.8, 2.4, 2.3],
+                            backgroundColor: '#facc15',
+                            borderColor: '#eab308',
+                            borderWidth: 1,
+                            unit: '%'
+                        }]
+                    },
+                    options: {...commonChartOptions, scales: {...commonChartOptions.scales, y: {...commonChartOptions.scales.y, unit: '%'}}}
+                });
+            }
+        });
+    </script>
+</body>
+</html>
