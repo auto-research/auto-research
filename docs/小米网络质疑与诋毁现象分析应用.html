@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小米网络质疑与诋毁现象分析</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Visualization & Content Choices:
+        - Report Info: Executive Summary, Intro -> Goal: Inform -> Presentation: Static text blocks -> Interaction: None -> Justification: Foundational context -> Library/Method: HTML/Tailwind.
+        - Report Info: Core Reasons (Competition, Product, Brand, After-Sales) -> Goal: Organize & Inform -> Presentation: Interactive cards for each reason, with key sub-points and examples. -> Interaction: Click to expand/reveal details for each sub-point/incident. -> Justification: Allows focused exploration of complex causes. -> Library/Method: HTML/Tailwind, JS for show/hide.
+        - Report Info: Table 1 (Major Controversies) -> Goal: Inform & Compare -> Presentation: Interactive list/cards. -> Interaction: Click on an event to display its details (nature, impact). -> Justification: Provides quick overview and deep dive into specific incidents. -> Library/Method: HTML/Tailwind, JS for dynamic display.
+        - Report Info: Table 2 (Criticizer Profiles) -> Goal: Inform & Compare -> Presentation: Interactive cards for each group. -> Interaction: Hover/click on cards for details. -> Justification: Clarifies the different actors and their motivations. -> Library/Method: HTML/Tailwind, JS for interactions.
+        - Report Info: Conclusion -> Goal: Inform -> Presentation: Static text block. -> Interaction: None -> Justification: Summarizes findings. -> Library/Method: HTML/Tailwind.
+        CONFIRMING NO SVG/Mermaid. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+        }
+        .nav-link.active {
+            border-bottom-width: 2px;
+            border-color: #0284c7; /* sky-600 */
+            color: #0284c7; /* sky-600 */
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .card-clickable {
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .card-clickable:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .details-content {
+            display: none;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+        .details-content.open {
+            display: block;
+            max-height: 1000px; /* Adjust as needed */
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-slate-800">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="font-bold text-xl text-sky-700">小米网络舆情分析</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#overview" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:text-sky-600 hover:bg-stone-100">概述</a>
+                        <a href="#core-reasons" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:text-sky-600 hover:bg-stone-100">核心原因</a>
+                        <a href="#major-controversies" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:text-sky-600 hover:bg-stone-100">主要争议</a>
+                        <a href="#criticizer-profiles" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:text-sky-600 hover:bg-stone-100">质疑者画像</a>
+                        <a href="#conclusion" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:text-sky-600 hover:bg-stone-100">结论与启示</a>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" id="mobile-menu-button" class="bg-white inline-flex items-center justify-center p-2 rounded-md text-slate-500 hover:text-sky-600 hover:bg-stone-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sky-500" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">打开主菜单</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <div class="md:hidden" id="mobile-menu" style="display: none;">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#overview" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-sky-600 hover:bg-stone-100">概述</a>
+                <a href="#core-reasons" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-sky-600 hover:bg-stone-100">核心原因</a>
+                <a href="#major-controversies" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-sky-600 hover:bg-stone-100">主要争议</a>
+                <a href="#criticizer-profiles" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-sky-600 hover:bg-stone-100">质疑者画像</a>
+                <a href="#conclusion" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-sky-600 hover:bg-stone-100">结论与启示</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <section id="overview" class="content-section space-y-6">
+            <h2 class="text-3xl font-bold text-sky-700 border-b-2 border-sky-200 pb-2">概述</h2>
+            <p class="text-lg leading-relaxed">本应用旨在分析小米公司在网络上持续面临的各种质疑与诋毁现象。报告指出，这种负面舆论的产生是多重复杂因素交织的结果，包括激烈的市场竞争、产品质量与用户体验问题、品牌定位挑战以及售后服务不足等。本应用将帮助用户理解这些核心原因，回顾主要争议事件，剖析不同质疑群体的画像，并最终总结报告的结论与启示，以期为用户提供一个全面、深入的视角来审视小米所处的舆论环境。</p>
+            <div class="p-6 bg-white rounded-lg shadow">
+                <h3 class="text-xl font-semibold text-slate-700 mb-3">执行摘要</h3>
+                <p class="text-slate-600 leading-relaxed">小米，作为一家领先的科技企业和新兴的汽车制造商，持续面临着线上各种质疑与诋毁。这种负面情绪的蔓延，源于多重复杂因素的交织。其中，激烈的市场竞争、产品质量与用户体验方面的感知不足、品牌定位的战略性挑战，以及售后服务体系的薄弱环节，构成了其核心驱动力。小米“高性价比”的品牌基因与其冲击高端市场的愿景之间存在的内在冲突，加之行业内高度激进的市场竞争，以及在汽车等新业务领域中出现的具体产品问题，都显著加剧了负面舆论。此外，客户支持方面的运营短板也进一步激化了用户不满。对小米进行质疑和诋毁的群体，既包括直接竞争对手及其关联方，也涵盖了真正感到不满的消费者，更不容忽视的是有组织、有预谋的“黑公关”活动。</p>
+            </div>
+             <div class="p-6 bg-white rounded-lg shadow">
+                <h3 class="text-xl font-semibold text-slate-700 mb-3">引言</h3>
+                <p class="text-slate-600 leading-relaxed">小米集团已发展成为一家多元化的综合性企业，业务范围从智能手机扩展至庞大的物联网生态系统，近期更涉足电动汽车领域。这种快速的业务扩张，结合其长期奉行的“高配低价”战略，使其成为市场密切关注和激烈竞争的焦点。特别是进军电动汽车这一高风险、高关注度的行业，极大地提升了小米的品牌曝光度，同时也显著增加了其在线上所面临的质疑和批评的广度与深度。本报告旨在深入剖析小米持续遭受网络质疑和诋毁的根本原因，超越表层现象，揭示其深层次的问题根源。同时，报告将对参与这些负面舆论传播的各类群体进行分类，以期更清晰地理解他们的动机及其对小米品牌声誉的影响。</p>
+            </div>
+        </section>
+
+        <section id="core-reasons" class="content-section space-y-6">
+            <h2 class="text-3xl font-bold text-sky-700 border-b-2 border-sky-200 pb-2">核心原因分析</h2>
+            <p class="text-lg leading-relaxed">小米面临的网络质疑与诋毁，其根源复杂且相互关联。本部分将深入剖析四个主要方面：激烈的市场竞争、产品质量与用户体验问题、品牌定位与营销策略的挑战，以及售后服务与客户支持的不足。用户可以通过点击下方的卡片来展开查看各原因下的详细分析和具体案例，从而更清晰地理解这些因素是如何共同作用，并最终导致负面舆论的形成与发酵。</p>
+            <div id="reasons-container" class="grid md:grid-cols-2 gap-6">
+            </div>
+        </section>
+
+        <section id="major-controversies" class="content-section space-y-6">
+            <h2 class="text-3xl font-bold text-sky-700 border-b-2 border-sky-200 pb-2">主要争议事件回顾</h2>
+            <p class="text-lg leading-relaxed">小米在其发展历程中，经历了多次引发广泛关注和讨论的争议事件。这些事件不仅直接影响了小米的品牌形象，也成为了网络负面舆论的重要组成部分。本部分将梳理并展示报告中提及的主要争议事件，用户可以点击各个事件来查看其具体细节、即时影响以及更广泛的后续影响，从而更全面地了解这些事件的来龙去脉及其对小米的冲击。</p>
+            <div id="controversies-container" class="space-y-4">
+            </div>
+        </section>
+
+        <section id="criticizer-profiles" class="content-section space-y-6">
+            <h2 class="text-3xl font-bold text-sky-700 border-b-2 border-sky-200 pb-2">质疑者画像剖析</h2>
+            <p class="text-lg leading-relaxed">对小米进行网络质疑和诋毁的群体并非铁板一块，而是由多种具有不同动机和行为模式的群体构成。理解这些群体的构成、主要动机和典型行为，对于分析小米所处的舆论环境至关重要。本部分将基于报告中的分类，通过交互式卡片的形式，详细展示各类质疑与诋毁者的特征，包括直接竞争对手、不满的消费者以及有组织的恶意行为者等，帮助用户洞察网络负面声音背后的复杂图景。</p>
+            <div id="criticizers-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+        </section>
+
+        <section id="conclusion" class="content-section space-y-6">
+            <h2 class="text-3xl font-bold text-sky-700 border-b-2 border-sky-200 pb-2">结论与启示</h2>
+            <p class="text-lg leading-relaxed">综合分析报告的各项内容，我们可以看到小米当前面临的网络质疑与诋毁是一个多维度、深层次的问题。本部分将总结报告的核心结论，并提炼其对小米未来发展的启示。这不仅包括对问题根源的归纳，也涉及到对不同负面舆论来源的辨析，以及小米在应对这些挑战时可能需要采取的策略方向。希望这些结论与启示能为理解小米的品牌声誉管理提供有价值的参考。</p>
+            <div class="p-6 bg-white rounded-lg shadow">
+                <p class="text-slate-600 leading-relaxed">小米当前面临的网络质疑与诋毁并非单一现象，而是多重因素复杂交织的产物。这些因素包括：长期存在的、常常带有个人色彩的竞争对手之间的激烈对抗，这些对抗不断蔓延至公共舆论场；源于产品质量问题（尤其是在汽车等新业务领域）和售后服务不足的真实消费者不满；在品牌向高端市场转型过程中遭遇的品牌定位困境；以及有组织、有预谋的“黑公关”活动的隐秘影响。</p>
+                <p class="mt-4 text-slate-600 leading-relaxed">这些负面情绪的来源并非孤立存在，而是相互关联、相互作用。真实的产品问题为竞争对手提供了可乘之机，也为“黑公关”活动提供了放大负面信息的素材。竞争对手之间的言语交锋反过来又可能激化品牌拥趸的强烈反应，进一步加剧公众舆论的两极分化。同时，小米对创始人雷军个人品牌的过度依赖，意味着任何负面事件都会直接影响到他个人，从而放大危机。</p>
+                <p class="mt-4 text-slate-600 leading-relaxed">因此，小米面临的挑战在于如何精准识别并有效应对这些不同来源的负面舆论。这要求小米不仅要切实解决产品和服务的不足，以回应消费者真正的痛点，还要战略性地管理竞争对手的叙事，避免陷入无休止的口水战。更重要的是，小米需要通过法律和公关手段，积极打击恶意、有组织的诋毁行为。若未能有效区分并妥善处理这些不同层面的问题，小米将可能持续陷入网络负面舆论的循环之中。</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-800 text-stone-300 mt-12 py-8 text-center">
+        <p>&copy; 2024 小米网络质疑与诋毁现象分析应用。内容基于所提供报告。</p>
+    </footer>
+
+    <script>
+        const navLinks = document.querySelectorAll('.nav-link');
+        const contentSections = document.querySelectorAll('.content-section');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        function setActiveSection(hash) {
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === hash) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+            contentSections.forEach(section => {
+                if (section.id === hash.substring(1)) {
+                    section.classList.add('active');
+                } else {
+                    section.classList.remove('active');
+                }
+            });
+        }
+        
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                setActiveSection(targetId);
+                window.location.hash = targetId;
+                if (mobileMenu.style.display === 'block') {
+                    mobileMenu.style.display = 'none';
+                    mobileMenuButton.querySelector('svg.block').classList.remove('hidden');
+                    mobileMenuButton.querySelector('svg.hidden').classList.add('hidden');
+                }
+            });
+        });
+
+        mobileMenuButton.addEventListener('click', () => {
+            const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true' || false;
+            mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+            mobileMenu.style.display = isExpanded ? 'none' : 'block';
+            mobileMenuButton.querySelector('svg.block').classList.toggle('hidden');
+            mobileMenuButton.querySelector('svg.hidden').classList.toggle('hidden');
+        });
+
+        const initialHash = window.location.hash || '#overview';
+        setActiveSection(initialHash);
+
+        const coreReasonsData = [
+            {
+                title: "激烈的市场竞争与公司间争议",
+                id: "reason-competition",
+                introduction: "小米所处的市场环境竞争异常激烈，其与主要竞争对手之间的长期摩擦是网络负面评价的重要来源。",
+                points: [
+                    { 
+                        title: "历史性竞争：魅族与华为/荣耀", 
+                        details: "<strong>魅族：</strong>雷军与黄章宿怨已久，黄章多次公开抨击小米，指责其窃取商业机密，并贬低小米用户。小米9低价发布后，黄章称小米“贱惯了高不起来”。<br><strong>华为/荣耀：</strong>荣耀成立旨在争夺小米市场，双方高管多次网络争执。荣耀总裁赵明曾称“与小米的竞争已经结束”，激怒雷军。" 
+                    },
+                    {
+                        title: "引发敌意的具体事件",
+                        details: "<strong>“卢伟冰猪肉论”：</strong>卢伟冰讽刺华为芯片高利润言论被误读为嘲讽华为研发，引发轩然大波。<br><strong>小米10国际版包装争议：</strong>包装印有“轻松访问谷歌应用”被指对华为“落井下石”。<br><strong>小米高管调侃华为芯片禁令：</strong>王阳发文被解读为嘲讽华为芯片被禁。"
+                    },
+                    {
+                        title: "新战场：汽车领域",
+                        details: "小米进军电动汽车市场，竞争对手如华为智界S7、蔚来等采取“截胡”策略抢夺SU7订单，凸显市场竞争残酷。"
+                    },
+                    {
+                        title: "“竞争升级循环”模式",
+                        details: "竞争对手行动引发小米反击，反击被误读或视为挑衅，导致公众负面情绪。小米高管也参与其中。"
+                    },
+                    {
+                        title: "“品牌形象的关联性污染”",
+                        details: "竞争对手的贬低言论（如“无脑屌丝”）和小米高管的争议言论，对品牌及用户群体产生负面关联，阻碍高端化。"
+                    }
+                ]
+            },
+            {
+                title: "产品质量与用户体验问题",
+                id: "reason-product",
+                introduction: "小米产品在质量和用户体验方面的表现，是导致其网络负面评价的又一核心原因。",
+                points: [
+                    { 
+                        title: "智能手机相关问题：MIUI Bug、广告与系统性能", 
+                        details: "<strong>MIUI问题：</strong>用户普遍反映系统Bug多（如自动亮度失灵、重启、卡顿、死机、闪退、掉帧），被批拉低体验至“千元机”水平。<br><strong>广告过多：</strong>MIUI系统广告泛滥，严重影响用户体验。<br><strong>硬件质量问题：</strong>小米11系列“烧Wi-Fi”、主板问题、耗电、充电慢、信号差等投诉集中。" 
+                    },
+                    {
+                        title: "汽车产品争议：小米SU7",
+                        details: "<strong>碳纤维引擎盖“虚假宣传”：</strong>4.2万元选装件被指功能与宣传不符，引发“虚假宣传”指控。<br><strong>消费者维权行动：</strong>SU7 Ultra车主集体维权要求退车赔偿，小米补偿方案遭拒。<br><strong>交通事故后续影响：</strong>安徽高速SU7致命事故（三人遇难）严重影响公众对小米汽车认知，雷军承认打击巨大。"
+                    },
+                    {
+                        title: "普遍消费者不满",
+                        details: "宣传承诺与实际产品性能/耐用性存在差距，消费者常用“垃圾”、“差”等词表达不满。"
+                    },
+                    {
+                        title: "“预期-表现差距”",
+                        details: "小米以“高性价比”著称，进军高端市场时，若产品未能达到消费者高预期，失望情绪被放大。"
+                    },
+                    {
+                        title: "负面体验在新业务领域被放大",
+                        details: "汽车领域问题（安全、高价值部件虚假宣传）对品牌声誉和财务风险远超手机Bug。"
+                    }
+                ]
+            },
+            {
+                title: "品牌定位与营销策略挑战",
+                id: "reason-branding",
+                introduction: "小米在品牌定位上存在固有冲突，这为其带来了营销策略上的挑战，并引发了大量争议。",
+                points: [
+                    { 
+                        title: "高端化困境", 
+                        details: "小米以“高配低价”闻名，形成“便宜货”形象，与“冲高端”战略目标冲突。定价两难，难以提供高端“声望”。" 
+                    },
+                    {
+                        title: "营销失误",
+                        details: "<strong>常见技术的“过度包装”：</strong>雷军擅长包装常见技术，利用信息差让外界“不明觉厉”，易被指夸大。<br><strong>争议性促销活动：</strong>英国1英镑闪购被指非“先到先得”，小米12“随手拍”月亮被揭摆拍。<br><strong>激进的竞争营销：</strong>雷军对SU7订单被截胡的回应虽巧妙，但也凸显营销的激进特点。"
+                    },
+                    {
+                        title: "知识产权与设计抄袭指控",
+                        details: "多次面临抄袭设计（小米手机3/8）、侵犯知识产权（“米家”标识、米萌Mimoji）指控，加剧原创性质疑。"
+                    },
+                    {
+                        title: "过度依赖创始人个人IP",
+                        details: "品牌与雷军个人强绑定，产品问题或争议易直接指向雷军，导致“信任崩塌”，增加品牌脆弱性。"
+                    },
+                    {
+                        title: "“性价比”与“高端化”的悖论",
+                        details: "根深蒂固的“高配低价”认知使高端转型异常艰难，任何高端尝试都面临传统用户和高端市场的双重审视。"
+                    },
+                    {
+                        title: "雷军个人品牌的“单点故障”",
+                        details: "雷军个人IP是资产也是风险点，重大问题发生时，负面情绪直接指向他个人，放大危机。"
+                    }
+                ]
+            },
+            {
+                title: "售后服务与客户支持不足",
+                id: "reason-service",
+                introduction: "售后服务和客户支持方面的不足，是导致消费者不满并转化为网络负面评价的重要因素。",
+                points: [
+                    { 
+                        title: "服务质量不一致", 
+                        details: "大量投诉指售后服务差，无法解决问题，客服态度不专业或推诿，“踢皮球”现象。" 
+                    },
+                    {
+                        title: "具体投诉与未解决问题",
+                        details: "<strong>小米11系列：</strong>“烧Wi-Fi”和主板问题官方通常仅维修更换，拒退换，引用户不满。<br><strong>小米有品平台：</strong>投诉包括定金保价“猫腻”、商品质量问题、售后拖延或拒退换。<br><strong>SU7退款争议：</strong>碳纤维引擎盖争议中，客户要求无损退订，小米初坚持定金不可退。"
+                    },
+                    {
+                        title: "新业务领域感知到的不成熟",
+                        details: "小米SU7售后服务网站被指与成熟品牌相比尚需完善，新业务运营支持存差距。"
+                    },
+                    {
+                        title: "售后服务是“产品故障的放大器”",
+                        details: "产品问题本身负面，不足或不响应的售后服务会显著放大负面情绪，将产品投诉升级为品牌信任问题。"
+                    },
+                    {
+                        title: "快速扩张带来的“运营滞后”",
+                        details: "小米快速多元化，新业务的售后和客户支持基础设施可能未能跟上产品发布和销售步伐。"
+                    }
+                ]
+            }
+        ];
+
+        const reasonsContainer = document.getElementById('reasons-container');
+        coreReasonsData.forEach(reason => {
+            const reasonCard = document.createElement('div');
+            reasonCard.className = 'bg-white rounded-lg shadow p-6 card-clickable';
+            reasonCard.innerHTML = `
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xl font-semibold text-sky-600">${reason.title}</h3>
+                    <span class="text-sky-600 transform transition-transform duration-300">▼</span>
+                </div>
+                <p class="text-sm text-slate-500 mt-2">${reason.introduction}</p>
+                <div class="mt-4 space-y-3 details-content">
+                    ${reason.points.map(point => `
+                        <div class="p-3 bg-stone-50 rounded">
+                            <h4 class="font-medium text-slate-700">${point.title}</h4>
+                            <p class="text-sm text-slate-600 mt-1">${point.details}</p>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            reasonsContainer.appendChild(reasonCard);
+
+            const header = reasonCard.querySelector('.flex');
+            const content = reasonCard.querySelector('.details-content');
+            const arrow = reasonCard.querySelector('.flex span');
+            header.addEventListener('click', () => {
+                content.classList.toggle('open');
+                arrow.classList.toggle('rotate-180');
+            });
+        });
+
+        const controversiesData = [
+            { name: "魅族与小米的长期竞争", nature: "竞争纠纷、个人恩怨", details: "黄章指控雷军窃取MIUI机密，称小米用户“无脑屌丝”，批评小米9低价“贱惯了”", immediate_impact: "长期公开敌意，引发网络骂战", wider_impact: "品牌形象被“低价”标签固化，阻碍高端化；加剧行业内卷" },
+            { name: "“卢伟冰猪肉论”", nature: "竞争纠纷、营销失误", details: "卢伟冰讽刺华为芯片高利润，被误读为嘲讽华为研发能力", immediate_impact: "轩然大波，小米高层被指不重视研发", wider_impact: "损害小米技术形象，加剧与华为/荣耀粉丝对立" },
+            { name: "小米10国际版包装争议", nature: "竞争纠纷、公关危机", details: "包装印有“易于访问谷歌应用”被指对华为“落井下石”", immediate_impact: "引发网民热议，小米被迫澄清", wider_impact: "损害企业形象，被指缺乏同理心" },
+            { name: "小米高管调侃华为芯片禁令", nature: "竞争纠纷、公关危机", details: "王阳发文暗示华为硬件差异化消失，被指嘲讽芯片禁令", immediate_impact: "引发网民愤怒，微博被删除", wider_impact: "加剧品牌对立，损害企业高管形象" },
+            { name: "小米11系列质量问题", nature: "产品质量、售后服务", details: "普遍出现“烧Wi-Fi”、主板问题、耗电快、充电慢、信号差等", immediate_impact: "大量用户投诉，形成维权群", wider_impact: "严重损害手机产品线口碑，侵蚀用户信任" },
+            { name: "SU7碳纤维引擎盖争议", nature: "产品质量、虚假宣传", details: "4.2万元选装件被指“虚假宣传”，功能与宣传不符", immediate_impact: "大量车主集体维权，要求退车赔偿", wider_impact: "严重损害小米汽车品牌信誉，引发法律风险" },
+            { name: "SU7交通事故", nature: "产品安全、公关危机", details: "安徽高速致命事故，导致三人遇难", immediate_impact: "引发公众对汽车安全性的担忧和质疑", wider_impact: "严重打击小米汽车初期形象，雷军个人声誉受损" },
+            { name: "“黑公关”案件", nature: "恶意攻击、网络犯罪", details: "小米法务部称团伙操纵近万账号恶意造谣", immediate_impact: "官方通报后又被删除，引发讨论", wider_impact: "舆论环境复杂化，真假信息难辨，增加企业维权难度" },
+            { name: "过度依赖雷军个人IP", nature: "品牌策略、公关风险", details: "品牌与雷军个人强绑定，产品问题易引发信任崩塌", immediate_impact: "雷军个人承受巨大舆论压力", wider_impact: "品牌抗风险能力降低，危机应对更具挑战性" },
+            { name: "售后服务不足", nature: "运营管理、客户支持", details: "投诉处理不力，客服推诿，退换货困难", immediate_impact: "用户不满升级，集体维权", wider_impact: "损害品牌忠诚度，负面口碑持续发酵" }
+        ];
+
+        const controversiesContainer = document.getElementById('controversies-container');
+        controversiesData.forEach(con => {
+            const controversyCard = document.createElement('div');
+            controversyCard.className = 'bg-white rounded-lg shadow overflow-hidden';
+            controversyCard.innerHTML = `
+                <div class="p-4 card-clickable">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-sky-600">${con.name}</h3>
+                        <span class="text-sky-600 transform transition-transform duration-300">▼</span>
+                    </div>
+                    <p class="text-sm text-slate-500 mt-1">性质: ${con.nature}</p>
+                </div>
+                <div class="px-4 pb-4 border-t border-slate-200 details-content">
+                    <p class="text-sm text-slate-600 mt-3"><strong>主要细节:</strong> ${con.details}</p>
+                    <p class="text-sm text-slate-600 mt-2"><strong>即时影响:</strong> ${con.immediate_impact}</p>
+                    <p class="text-sm text-slate-600 mt-2"><strong>更广泛的影响:</strong> ${con.wider_impact}</p>
+                </div>
+            `;
+            controversiesContainer.appendChild(controversyCard);
+
+            const header = controversyCard.querySelector('.card-clickable');
+            const content = controversyCard.querySelector('.details-content');
+            const arrow = controversyCard.querySelector('.flex span');
+            header.addEventListener('click', () => {
+                content.classList.toggle('open');
+                arrow.classList.toggle('rotate-180');
+            });
+        });
+        
+        const criticizersData = [
+            { 
+                category: "直接竞争对手及其关联方", 
+                representatives: "公司高管及员工 (如：魅族黄章、荣耀赵明、熊军民、前华为员工“HW前HR”)", 
+                motivation: "争取竞争优势、市场份额，削弱对手品牌形象", 
+                behavior: "公开言论攻击、社交媒体讽刺、散布负面信息、截胡订单",
+                impact: "直接损害品牌声誉，激化行业对立，影响消费者选择"
+            },
+            { 
+                category: "直接竞争对手及其关联方", 
+                representatives: "行业分析师/评论员 (与竞争对手立场一致)", 
+                motivation: "引导行业舆论，获取关注度，可能存在商业合作", 
+                behavior: "撰写偏颇文章，放大对手负面，为特定品牌站台",
+                impact: "影响行业评价，误导公众认知，加剧舆论偏向性"
+            },
+            { 
+                category: "不满的消费者与用户社群", 
+                representatives: "产品用户 (如：小米11用户、SU7 Ultra车主)", 
+                motivation: "寻求问题解决、维权、警示他人、表达不满", 
+                behavior: "社交媒体投诉、论坛发帖、集体维权、法律诉讼",
+                impact: "真实的用户反馈，可能引发大规模负面舆论，损害品牌信任"
+            },
+            { 
+                category: "不满的消费者与用户社群", 
+                representatives: "“反米粉”/品牌黑粉", 
+                motivation: "强烈的情绪化偏见，可能源于过往负面经历或支持竞品", 
+                behavior: "持续发布负面评论、恶意攻击、放大负面新闻",
+                impact: "制造和传播情绪化、非理性的负面信息，污染舆论环境"
+            },
+            { 
+                category: "不满的消费者与用户社群", 
+                representatives: "普通大众/网民", 
+                motivation: "受舆论趋势影响，对企业行为的道德判断，或对大企业的普遍质疑", 
+                behavior: "参与热门话题讨论，转发、评论、点赞相关内容",
+                impact: "形成广泛的社会舆论压力，影响潜在消费者认知"
+            },
+            { 
+                category: "有组织的“黑公关”活动与恶意行为者", 
+                representatives: "专业“网络水军”", 
+                motivation: "经济利益驱动，受第三方雇佣", 
+                behavior: "操控大量社交媒体账号，批量生成黑稿，复杂分发链条",
+                impact: "系统性、大规模诋毁，扭曲事实，严重损害企业商誉，构成违法行为"
+            },
+            { 
+                category: "有组织的“黑公关”活动与恶意行为者", 
+                representatives: "自媒体/KOL (可能受雇或为流量)", 
+                motivation: "流量变现，或受雇进行负面宣传", 
+                behavior: "发布煽动性、偏颇或虚假内容，利用影响力引导舆论",
+                impact: "放大负面信息，降低信息可信度，损害企业名誉"
+            },
+             { 
+                category: "有组织的“黑公关”活动与恶意行为者", 
+                representatives: "法律实体 (作为恶意攻击工具)", 
+                motivation: "通过法律途径施压，制造负面新闻", 
+                behavior: "发起或威胁诉讼，即使法律依据薄弱",
+                impact: "增加企业应对成本，制造负面公关事件"
+            }
+        ];
+
+        const criticizersContainer = document.getElementById('criticizers-container');
+        criticizersData.forEach(crit => {
+            const criticizerCard = document.createElement('div');
+            criticizerCard.className = 'bg-white rounded-lg shadow p-5 card-clickable flex flex-col justify-between';
+            criticizerCard.innerHTML = `
+                <div>
+                    <h3 class="text-lg font-semibold text-sky-700">${crit.representatives}</h3>
+                    <p class="text-sm text-slate-500 mt-1">${crit.category}</p>
+                    <div class="mt-3 details-content space-y-2">
+                        <p class="text-sm text-slate-600"><strong>主要动机:</strong> ${crit.motivation}</p>
+                        <p class="text-sm text-slate-600"><strong>典型行为:</strong> ${crit.behavior}</p>
+                        <p class="text-sm text-slate-600"><strong>对小米的影响:</strong> ${crit.impact}</p>
+                    </div>
+                </div>
+                <button class="mt-4 text-sm text-sky-600 hover:text-sky-700 font-medium self-start toggle-details-btn">查看详情 ▼</button>
+            `;
+            criticizersContainer.appendChild(criticizerCard);
+            
+            const detailsContent = criticizerCard.querySelector('.details-content');
+            const toggleButton = criticizerCard.querySelector('.toggle-details-btn');
+
+            criticizerCard.addEventListener('click', (event) => {
+                 if (event.target === toggleButton || toggleButton.contains(event.target)) {
+                    detailsContent.classList.toggle('open');
+                    toggleButton.textContent = detailsContent.classList.contains('open') ? '收起详情 ▲' : '查看详情 ▼';
+                 } else if (!detailsContent.classList.contains('open') && (event.target === criticizerCard || criticizerCard.querySelector('h3').contains(event.target) || criticizerCard.querySelector('p:nth-of-type(1)').contains(event.target) ) ) {
+                    detailsContent.classList.add('open');
+                    toggleButton.textContent = '收起详情 ▲';
+                 }
+            });
+        });
+
+    </script>
+</body>
+</html>
